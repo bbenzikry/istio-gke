@@ -19,6 +19,8 @@ Apply the Istio CRDs:
 kubectl apply -f ./install/kubernetes/helm/istio/templates/crds.yaml
 ```
 
+> As described in https://github.com/istio/istio/issues/10588#issuecomment-466775037 this is no longer required and will raise ``Error: customresourcedefinitions.apiextensions.k8s.io "adapters.config.istio.io" already exists`` on ``helm install/upgrade``
+
 Create a service account and a cluster role binding for Tiller:
 
 ```bash
