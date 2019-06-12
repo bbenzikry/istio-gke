@@ -42,6 +42,31 @@ gcloud container clusters describe istio --zone=europe-west3-a \
 
 You'll be using the IP ranges to allow unrestricted egress traffic for services running inside the service mesh.
 
+> Make sure you create a secret for grafana as follows
+
+```bash
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana
+  namespace: istio-system
+  labels:
+    app: grafana
+type: Opaque
+data:
+  username: YWRtaW4=
+  passphrase: MWYyZDFlMmU2N2Rm
+EOF
+```
+
+OR
+```bash
+kubectl create secret generic grafana --from-literal=username='admin' --from-literal=passphrase='password' -n istio-system
+```
+
+See [here](https://github.com/istio/istio/issues/11742) for issue with helm that forces this
+
 Configure Istio with Prometheus, Jaeger, and cert-manager:
 
 ```yaml
@@ -111,5 +136,7 @@ Verify that Istio workloads are running:
 ```bash
 kubectl -n istio-system get pods
 ```
+
+
 
 Next: [Configure Istio Gateway with Let's Encrypt wildcard certificate](05-letsencrypt-setup.md)
